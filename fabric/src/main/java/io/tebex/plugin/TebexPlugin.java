@@ -155,7 +155,7 @@ public class TebexPlugin implements Platform, DedicatedServerModInitializer {
     }
 
     @Override
-    public void dispatchCommand(String command) {
+    public void dispatchCommand(Object player, String command) {
         server.getCommandManager().execute(server.getCommandSource(), command);
     }
 
@@ -170,7 +170,7 @@ public class TebexPlugin implements Platform, DedicatedServerModInitializer {
     }
 
     @Override
-    public void executeBlocking(Runnable runnable) {
+    public void executeBlocking(Object player, Runnable runnable) {
         try {
             Multithreading.executeBlocking(runnable);
         } catch (InterruptedException | ExecutionException e) {
@@ -179,7 +179,7 @@ public class TebexPlugin implements Platform, DedicatedServerModInitializer {
     }
 
     @Override
-    public void executeBlockingLater(Runnable runnable, long time, TimeUnit unit) {
+    public void executeBlockingLater(Object player, Runnable runnable, long time, TimeUnit unit) {
         try {
             Multithreading.executeBlockingLater(runnable, time, unit);
         } catch (InterruptedException | ExecutionException e) {

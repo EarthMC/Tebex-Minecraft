@@ -70,7 +70,7 @@ public class BuyGUI {
                 }
         )));
 
-        platform.executeBlocking(listingGui::open);
+        platform.executeBlocking(player.getUuid(), listingGui::open);
     }
 
     private void openCategoryMenu(ServerPlayerEntity player, ICategory category) {

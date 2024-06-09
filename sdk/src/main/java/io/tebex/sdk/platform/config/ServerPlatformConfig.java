@@ -103,7 +103,7 @@ public class ServerPlatformConfig implements IPlatformConfig {
     /**
      * Sets whether to use the multi-instance mode.
      *
-     * @param developerMode Whether to use multi-instance.
+     * @param multiInstance Whether to use multi-instance.
      */
     public void setMultiInstance(boolean multiInstance) {
         this.multiInstance = multiInstance;

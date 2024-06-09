@@ -125,14 +125,15 @@ public interface Platform {
 
     /**
      * Dispatches a command to the server.
+     * @param player The player to dispatch the command for
      * @param command The command to dispatch.
      */
-    void dispatchCommand(String command);
+    void dispatchCommand(Object player, String command);
 
     void executeAsync(Runnable runnable);
     void executeAsyncLater(Runnable runnable, long time, TimeUnit unit);
-    void executeBlocking(Runnable runnable);
-    void executeBlockingLater(Runnable runnable, long time, TimeUnit unit);
+    void executeBlocking(Object player, Runnable runnable);
+    void executeBlockingLater(Object player, Runnable runnable, long time, TimeUnit unit);
     boolean isPlayerOnline(Object player);
     int getFreeSlots(Object player);
 
@@ -248,9 +249,9 @@ public interface Platform {
                 continue;
             }
 
-            executeBlocking(() -> {
+            executeBlocking(playerId, () -> {
                 info(String.format("Dispatching command '%s' for player '%s'.", command.getParsedCommand(), playerName));
-                dispatchCommand(command.getParsedCommand());
+                dispatchCommand(playerId, command.getParsedCommand());
             });
             completedCommands.add(command.getId());
 
@@ -279,9 +280,9 @@ public interface Platform {
 
             List<Integer> completedCommands = new ArrayList<>();
             for (QueuedCommand command : offlineData.getCommands()) {
-                executeBlockingLater(() -> {
+                executeBlockingLater(command.getPlayer().getName(), () -> {
                     info(String.format("Dispatching offline command '%s' for player '%s'.", command.getParsedCommand(), command.getPlayer().getName()));
-                    dispatchCommand(command.getParsedCommand());
+                    dispatchCommand(command.getPlayer().getName(), command.getParsedCommand());
                 }, command.getDelay(), TimeUnit.SECONDS);
                 completedCommands.add(command.getId());
 

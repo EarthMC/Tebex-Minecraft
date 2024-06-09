@@ -53,7 +53,7 @@ public class BuyGUI {
             }));
         });
 
-        platform.executeBlocking(() -> listingGui.open(player));
+        platform.executeBlocking(player.getUniqueId(), () -> listingGui.open(player));
     }
 
     private void openCategoryMenu(Player player, ICategory category) {
@@ -107,7 +107,7 @@ public class BuyGUI {
             });
         })));
 
-        platform.executeBlocking(() -> subListingGui.open(player));
+        platform.executeBlocking(player.getUniqueId(), () -> subListingGui.open(player));
     }
 
     private ItemBuilder getCategoryItemBuilder(ICategory category) {

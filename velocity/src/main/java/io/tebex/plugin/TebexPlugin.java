@@ -212,7 +212,7 @@ public class TebexPlugin implements Platform {
     }
 
     @Override
-    public void dispatchCommand(String command) {
+    public void dispatchCommand(Object player, String command) {
         proxy.getCommandManager().executeAsync(proxy.getConsoleCommandSource(), command);
     }
 
@@ -232,13 +232,13 @@ public class TebexPlugin implements Platform {
     }
 
     @Override
-    public void executeBlocking(Runnable runnable) {
+    public void executeBlocking(Object player, Runnable runnable) {
         // Velocity has no concept of "blocking"
         executeAsync(runnable);
     }
 
     @Override
-    public void executeBlockingLater(Runnable runnable, long time, TimeUnit unit) {
+    public void executeBlockingLater(Object player, Runnable runnable, long time, TimeUnit unit) {
         // Velocity has no concept of "blocking"
         executeAsyncLater(runnable, time, unit);
     }

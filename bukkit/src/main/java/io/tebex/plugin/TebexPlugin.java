@@ -109,7 +109,8 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
     @Override
     public void onDisable() {
         // cancel all async tasks
-        getServer().getScheduler().cancelTasks(this);
+        if (!morePaperLib.scheduling().isUsingFolia())
+            getServer().getScheduler().cancelTasks(this);
 
         // shutdown all async tasks
         if(storeService != null) {
@@ -158,7 +159,8 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
 
     @Override
     public void halt() {
-        getServer().getScheduler().cancelTasks(this);
+        if (!morePaperLib.scheduling().isUsingFolia())
+            getServer().getScheduler().cancelTasks(this);
 
         storeService.setSetup(false);
         analyticsService.setSetup(false);
@@ -175,10 +177,14 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
     }
 
     @Override
-    public void dispatchCommand(String command) {
+    public void dispatchCommand(Object player, String command) {
         if (!isEnabled()) return;
 
-        Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+        final Player p = getPlayer(player);
+        if (p == null)
+            Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command);
+        else
+            morePaperLib.scheduling().entitySpecificScheduler(p).run(() -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command), () -> {});
     }
 
     @Override
@@ -196,17 +202,25 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
     }
 
     @Override
-    public void executeBlocking(Runnable runnable) {
+    public void executeBlocking(Object player, Runnable runnable) {
         if (!isEnabled()) return;
 
-        getScheduler().run(runnable);
+        final Player p = getPlayer(player);
+        if (p == null)
+            getScheduler().run(runnable);
+        else
+            morePaperLib.scheduling().entitySpecificScheduler(p).run(runnable, () -> {});
     }
 
     @Override
-    public void executeBlockingLater(Runnable runnable, long time, TimeUnit unit) {
+    public void executeBlockingLater(Object player, Runnable runnable, long time, TimeUnit unit) {
         if (!isEnabled()) return;
 
-        getScheduler().runDelayed(runnable, unit.toMillis(time));
+        final Player p = getPlayer(player);
+        if (p == null)
+            getScheduler().runDelayed(runnable, unit.toMillis(time) / 50);
+        else
+            morePaperLib.scheduling().entitySpecificScheduler(p).runDelayed(runnable, () -> {}, unit.toMillis(time) / 50);
     }
 
     @Override
@@ -462,7 +476,7 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
                     Bukkit.getPluginManager().disablePlugin(plugin);
 
                     if(file != null) {
-                        executeBlockingLater(() -> {
+                        executeAsyncLater(() -> {
                             deletedLegacyPluginJar.set(file.delete());
 
                             boolean deletedLegacyPluginDir = FileUtils.deleteDirectory(oldPluginDir);

@@ -207,7 +207,7 @@ public class TebexPlugin extends Plugin implements Platform {
     }
 
     @Override
-    public void dispatchCommand(String command) {
+    public void dispatchCommand(Object player, String command) {
         getProxy().getPluginManager().dispatchCommand(getProxy().getConsole(), command);
     }
 
@@ -222,13 +222,13 @@ public class TebexPlugin extends Plugin implements Platform {
     }
 
     @Override
-    public void executeBlocking(Runnable runnable) {
+    public void executeBlocking(Object player, Runnable runnable) {
         // BungeeCord has no concept of "blocking"
         executeAsync(runnable);
     }
 
     @Override
-    public void executeBlockingLater(Runnable runnable, long time, TimeUnit unit) {
+    public void executeBlockingLater(Object player, Runnable runnable, long time, TimeUnit unit) {
         // BungeeCord has no concept of "blocking"
         executeAsyncLater(runnable, time, unit);
     }
