@@ -198,7 +198,7 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
     public void executeAsyncLater(Runnable runnable, long time, TimeUnit unit) {
         if (!isEnabled()) return;
 
-        getAsyncScheduler().runDelayed(runnable, Duration.ofMillis(unit.toMillis(time)));
+        getAsyncScheduler().runDelayed(runnable, Duration.ofMillis(Math.max(unit.toMillis(time), 1)));
     }
 
     @Override
@@ -220,7 +220,7 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
         if (p == null)
             getScheduler().runDelayed(runnable, unit.toMillis(time) / 50);
         else
-            morePaperLib.scheduling().entitySpecificScheduler(p).runDelayed(runnable, () -> {}, unit.toMillis(time) / 50);
+            morePaperLib.scheduling().entitySpecificScheduler(p).runDelayed(runnable, () -> {}, Math.max(1, unit.toMillis(time) / 50));
     }
 
     @Override
