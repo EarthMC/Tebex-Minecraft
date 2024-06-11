@@ -21,8 +21,14 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
-    tasks.named("shadowJar", ShadowJar::class.java) {
-        archiveFileName.set("tebex-${project.name}-${rootProject.version}.jar")
+    tasks {
+        assemble {
+            dependsOn(shadowJar)
+        }
+
+        shadowJar {
+            archiveFileName.set("tebex-${project.name}-${rootProject.version}.jar")
+        }
     }
 
     repositories {
