@@ -218,7 +218,7 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
 
         final Player p = getPlayer(player);
         if (p == null)
-            getScheduler().runDelayed(runnable, unit.toMillis(time) / 50);
+            getScheduler().runDelayed(runnable, Math.max(1, unit.toMillis(time) / 50));
         else
             morePaperLib.scheduling().entitySpecificScheduler(p).runDelayed(runnable, () -> {}, Math.max(1, unit.toMillis(time) / 50));
     }
