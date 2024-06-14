@@ -177,7 +177,7 @@ public final class TebexPlugin extends JavaPlugin implements Platform {
     }
 
     @Override
-    public void dispatchCommand(Object player, String command) { // TODO player not required
+    public void dispatchCommand(String command) {
         if (!isEnabled()) return;
 
         morePaperLib.scheduling().globalRegionalScheduler().run(() -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), command));

@@ -125,10 +125,9 @@ public interface Platform {
 
     /**
      * Dispatches a command to the server.
-     * @param player The player to dispatch the command for
      * @param command The command to dispatch.
      */
-    void dispatchCommand(Object player, String command);
+    void dispatchCommand(String command);
 
     void executeAsync(Runnable runnable);
     void executeAsyncLater(Runnable runnable, long time, TimeUnit unit);
@@ -238,7 +237,7 @@ public interface Platform {
      * @param commands The commands to process.
      */
     default void processOnlineCommands(String playerName, Object playerId, List<QueuedCommand> commands) {
-        if(! isStoreSetup()) return;
+        if (!isStoreSetup()) return;
 
         List<Integer> completedCommands = new ArrayList<>();
         boolean hasInventorySpace = true;
@@ -251,7 +250,7 @@ public interface Platform {
 
             executeBlocking(playerId, () -> {
                 info(String.format("Dispatching command '%s' for player '%s'.", command.getParsedCommand(), playerName));
-                dispatchCommand(playerId, command.getParsedCommand());
+                dispatchCommand(command.getParsedCommand());
             });
             completedCommands.add(command.getId());
 
@@ -282,7 +281,7 @@ public interface Platform {
             for (QueuedCommand command : offlineData.getCommands()) {
                 executeBlockingLater(command.getPlayer().getName(), () -> {
                     info(String.format("Dispatching offline command '%s' for player '%s'.", command.getParsedCommand(), command.getPlayer().getName()));
-                    dispatchCommand(command.getPlayer().getName(), command.getParsedCommand());
+                    dispatchCommand(command.getParsedCommand());
                 }, command.getDelay(), TimeUnit.SECONDS);
                 completedCommands.add(command.getId());
 

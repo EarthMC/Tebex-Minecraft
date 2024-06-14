@@ -155,7 +155,7 @@ public class TebexPlugin implements Platform, DedicatedServerModInitializer {
     }
 
     @Override
-    public void dispatchCommand(Object player, String command) {
+    public void dispatchCommand(String command) {
         server.getCommandManager().execute(server.getCommandSource(), command);
     }
 

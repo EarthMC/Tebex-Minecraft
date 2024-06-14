@@ -207,7 +207,7 @@ public class TebexPlugin extends Plugin implements Platform {
     }
 
     @Override
-    public void dispatchCommand(Object player, String command) {
+    public void dispatchCommand(String command) {
         getProxy().getPluginManager().dispatchCommand(getProxy().getConsole(), command);
     }
 

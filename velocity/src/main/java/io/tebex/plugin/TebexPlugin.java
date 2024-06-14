@@ -212,7 +212,7 @@ public class TebexPlugin implements Platform {
     }
 
     @Override
-    public void dispatchCommand(Object player, String command) {
+    public void dispatchCommand(String command) {
         proxy.getCommandManager().executeAsync(proxy.getConsoleCommandSource(), command);
     }
 
