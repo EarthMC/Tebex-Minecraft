@@ -243,8 +243,8 @@ public class SDK {
                         paymentId,
                         packageId,
                         conditions.get("delay").getAsInt(),
-                        conditions.get("slots").getAsInt()
-
+                        conditions.get("slots").getAsInt(),
+                        player
                 ));
             }
 
